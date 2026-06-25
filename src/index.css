@@ -264,6 +264,10 @@ header h2 {
     flex: 100% 100%;
 }
 
+.recent__job--wrapper {
+    width: 100%;
+}
+
 @keyframes move_up {
     0% {
         transform: translateY(0%);
@@ -467,6 +471,34 @@ header h2 {
     }
     .container {
         padding: 0 0;
+    }
+}
+
+.browse__job.skeleton {
+    animation: "flicker" linear 1s infinite
+}
+
+.job__title--wrapper.skeleton {
+    background-color: lightgray;
+    padding: 24px 30%;
+    margin: 0 auto;
+}
+
+.job__desc.skeleton {
+    background-color: lightgray;
+    padding: 20% 40%;
+    margin: 12px auto;
+}
+
+@keyframes flicker {
+    0% {
+        filter: blur(1px);
+    }
+    50% {
+        filter: blur(10px);
+    }
+    100% {
+        filter: blur(1px);
     }
 }
 

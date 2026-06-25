@@ -63,6 +63,7 @@ export default function Browse({}) {
   }
 
   async function getNewJobs() {
+    setSortedJobs([])
     const {data} = await axios.get(`https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=50dce129&app_key=fa2501d32fdc779a3a027b2d50cf2d91&results_per_page=1000&what=${searchTerm}`)
     setNewJobs(data.results)
     setSortedJobs(newJobs)
@@ -90,7 +91,7 @@ export default function Browse({}) {
                   <div class="browse__bar">
                       <div class="search_bar">
                           <input type="text" class="search_bar--input" placeholder="Search" onChange={(event) => setSearchTerm(event.target.value)}/>
-                          <FontAwesomeIcon icon={faSearch} onClick={() => getNewJobs()}/>
+                          <FontAwesomeIcon icon={faSearch} onClick={() => getNewJobs()} className='clickable'/>
                       </div>
                       <select className="browse__select" onChange={(event) => {setSortType(event.target.value)}}>
                           <option disabled selected>Sort By</option>
@@ -113,9 +114,12 @@ export default function Browse({}) {
                       </select>
                   </div>
                   <div class="browse__jobs--wrapper">
-                      <i class="fas fa-spinner"></i>
                       <div class="browse__jobs">
-                        {sortedJobs.length > 0 ? sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).map((job, i) => <JobCard key={job.id} job={job}/>) : null}
+                        {sortedJobs.length > 0 ? 
+                            sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).map((job, i) => <JobCard key={job.id} job={job} skeleton={false}/>) 
+                            : 
+                            new Array(jobAmount).fill(0).map((_, i) => <JobCard skeleton={true} key={i}/>)
+                        }
                       </div>
                       <div class="browse__footer">
                           <div class="browse__footer--arrow" onClick={() => changePage(-1)}><FontAwesomeIcon icon={faArrowLeft}/></div>

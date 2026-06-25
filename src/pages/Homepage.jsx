@@ -39,10 +39,18 @@ export default function Homepage({jobs}) {
                     <div className="recent__jobs--wrapper">
                         <div className="recent__jobs--blur"></div>
                         <div className="recent__jobs">
-                            {getRecentJobs().map((job) => <RecentCard job={job} key={job.id}/>)}
+                            {getRecentJobs().length > 0 ? 
+                                getRecentJobs().map((job) => <RecentCard job={job} key={job.id}/>)
+                                : 
+                                new Array(8).fill(0).map((_, i) => <RecentCard skeleton={true} key={i}/>)
+                            }
                         </div>
                         <div className="recent__jobs" aria-hidden="">
-                            {getRecentJobs().map((job) => <RecentCard job={job} key={job.id}/>)}
+                            {getRecentJobs().length > 0 ? 
+                                getRecentJobs().map((job) => <RecentCard job={job} key={job.id}/>)
+                                : 
+                                new Array(8).fill(0).map((_, i) => <RecentCard skeleton={true} key={i}/>)
+                            }
                         </div>
                         <div className="recent__jobs--blur"></div>
                     </div>
