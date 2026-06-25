@@ -26,7 +26,7 @@ function App() {
           <Nav/>
           <Routes>
             <Route path="/" element={<Homepage jobs={jobs}/>}></Route>
-            <Route path="/browse" element={<Browse jobs={jobs}/>}></Route>
+            <Route path="/browse" element={<Browse/>}></Route>
           </Routes>
           <Footer/>
         </div>

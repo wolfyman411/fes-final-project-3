@@ -1,9 +1,86 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faArrowRight, faSearch } from '@fortawesome/free-solid-svg-icons'
 import JobCard from '../components/ui/JobCard'
+import axios from 'axios'
 
-export default function Browse({jobs}) {
+export default function Browse({}) {
+
+  const [newJobs,setNewJobs] = useState([])
+  const [sortedJobs,setSortedJobs] = useState(newJobs)
+  const [searchTerm,setSearchTerm] = useState("")
+  const [sortType,setSortType] = useState("")
+  const [jobType,setJobType] = useState("")
+  const [jobAmount,setJobAmount] = useState(6)
+  const [pageNumber,setPageNumber] = useState(0)
+  const [browseEntries,setBrowseEntries] = useState([])
+
+  useEffect(() => {
+    getNewJobs()
+  },[])
+
+  useEffect(() => {
+    sortNewJobs()
+  }, [newJobs,sortType,jobType])
+
+  useEffect(() => {
+    setPageNumber(0)
+  }, [jobAmount])
+
+  function sortNewJobs() {
+    let result = [...newJobs]
+
+    // Get the job type
+    if (jobType === "FULL_TIME") {
+        result = result.filter((job) => job.contract_time === "full_time")
+    }
+    else if (jobType === "PART_TIME") {
+        result = result.filter((job) => job.contract_time === "part_time")
+    }
+
+    // Sort the job
+    if (sortType === "A_TO_Z") {
+        result = result.sort(function(a,b) {
+            if (a.title < b.title) return -1
+            else if (a.title > b.title) return 1
+            else return 0
+        })
+    }
+    else if (sortType === "Z_TO_A") {
+        result = result.sort(function(a,b) {
+            if (a.title < b.title) return 1
+            else if (a.title > b.title) return -1
+            else return 0
+        })
+    }
+    else if (sortType === "NEWEST") {
+        result.sort((a,b) => Date.parse(b.created) - Date.parse(a.created))
+    }
+    else if (sortType === "OLDEST") {
+        result.sort((a,b) => Date.parse(a.created) - Date.parse(b.created))
+    }
+    setSortedJobs(result)
+  }
+
+  async function getNewJobs() {
+    const {data} = await axios.get(`https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=50dce129&app_key=fa2501d32fdc779a3a027b2d50cf2d91&results_per_page=1000&what=${searchTerm}`)
+    setNewJobs(data.results)
+    setSortedJobs(newJobs)
+  }
+
+  function changePage(val) {
+    // Prevent from going to far backward
+    if (pageNumber <= 0 && val < 0) {
+      return;
+    }
+    // Stop going forward if at end
+    if (sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).length % jobAmount != 0 && val > 0) {
+      return;
+    }
+
+    setPageNumber(pageNumber+val);
+  }
+
   return (
     <section id="browse">
           <div class="container">
@@ -12,32 +89,38 @@ export default function Browse({jobs}) {
                   <div class="section__sub">Use the <b class="primary">filters</b> and <b class="primary">searchbar</b> below to find your <b class="primary">ideal job.</b></div>
                   <div class="browse__bar">
                       <div class="search_bar">
-                          <input type="text" class="search_bar--input" placeholder="Search"/>
-                          <i class="fa-solid fa-magnifying-glass"></i>
+                          <input type="text" class="search_bar--input" placeholder="Search" onChange={(event) => setSearchTerm(event.target.value)}/>
+                          <FontAwesomeIcon icon={faSearch} onClick={() => getNewJobs()}/>
                       </div>
-                      <select class="browse__select" onchange="sortJobs(event)">
+                      <select className="browse__select" onChange={(event) => {setSortType(event.target.value)}}>
                           <option disabled selected>Sort By</option>
                           <option value="A_TO_Z">A to Z</option>
                           <option value="Z_TO_A">Z to A</option>
                           <option value="NEWEST">Newest</option>
                           <option value="OLDEST">Oldest</option>
                       </select>
-                      <select class="browse__select" onchange="filterJobs(event)">
+                      <select class="browse__select" onChange={(event) => setJobType(event.target.value)}>
                           <option disabled selected>Type</option>
                           <option value="FULL_TIME">Full Time</option>
                           <option value="PART_TIME">Part Time</option>
                           <option value="ANY">Any</option>
                       </select>
+                      <select class="browse__select" onChange={(event) => setJobAmount(parseInt(event.target.value))}>
+                          <option disabled selected>Items Per Search</option>
+                          <option value="6">6</option>
+                          <option value="12">12</option>
+                          <option value="24">24</option>
+                      </select>
                   </div>
                   <div class="browse__jobs--wrapper">
                       <i class="fas fa-spinner"></i>
                       <div class="browse__jobs">
-                        {jobs.length > 0 ? jobs.map((job, i) => <JobCard key={job.id} job={job}/>) : null}
+                        {sortedJobs.length > 0 ? sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).map((job, i) => <JobCard key={job.id} job={job}/>) : null}
                       </div>
                       <div class="browse__footer">
-                          <div class="browse__footer--arrow" onclick="changePage(-1)"><FontAwesomeIcon icon={faArrowLeft}/></div>
-                          <div class="browse__footer--number">0</div>
-                          <div class="browse__footer--arrow" onclick="changePage(1)"><FontAwesomeIcon icon={faArrowRight}/></div>
+                          <div class="browse__footer--arrow" onClick={() => changePage(-1)}><FontAwesomeIcon icon={faArrowLeft}/></div>
+                          <div class="browse__footer--number">{pageNumber}</div>
+                          <div class="browse__footer--arrow" onClick={() => changePage(1)}><FontAwesomeIcon icon={faArrowRight}/></div>
                       </div>
                   </div>
               </div>
