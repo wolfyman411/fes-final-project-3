@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import JobCard from '../components/ui/JobCard'
 
-export default function Browse() {
+export default function Browse({jobs}) {
   return (
     <section id="browse">
           <div class="container">
@@ -12,7 +12,7 @@ export default function Browse() {
                   <div class="section__sub">Use the <b class="primary">filters</b> and <b class="primary">searchbar</b> below to find your <b class="primary">ideal job.</b></div>
                   <div class="browse__bar">
                       <div class="search_bar">
-                          <input type="text" class="search_bar--input" placeholder="Search" onkeyup="searchString(event)"/>
+                          <input type="text" class="search_bar--input" placeholder="Search"/>
                           <i class="fa-solid fa-magnifying-glass"></i>
                       </div>
                       <select class="browse__select" onchange="sortJobs(event)">
@@ -32,7 +32,7 @@ export default function Browse() {
                   <div class="browse__jobs--wrapper">
                       <i class="fas fa-spinner"></i>
                       <div class="browse__jobs">
-                        {new Array(6).fill(0).map((_, i) => <JobCard/>)}
+                        {jobs.length > 0 ? jobs.map((job, i) => <JobCard key={job.id} job={job}/>) : null}
                       </div>
                       <div class="browse__footer">
                           <div class="browse__footer--arrow" onclick="changePage(-1)"><FontAwesomeIcon icon={faArrowLeft}/></div>

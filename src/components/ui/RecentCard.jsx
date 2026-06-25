@@ -1,23 +1,25 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGlobe } from '@fortawesome/free-solid-svg-icons'
 
-export default function RecentCard() {
+export default function RecentCard({job}) {
   return (
-    <div class="recent__job clickable">
-        <div class="recent__job--wrapper">
-            <div class="company__logo--wrapper">
-                <div class="job__logo">1</div>
-                <div class="job__title--wrapper">
-                    <div class="job__company">Job Company</div>
-                    <div class="job__title">Job Title</div>
+    <div className="recent__job">
+        <div className="recent__job--wrapper">
+            <div className="company__logo--wrapper">
+                <div className="job__logo">{job.company.display_name[0]}</div>
+                <div className="job__title--wrapper">
+                    <div className="job__company">{job.company.display_name}</div>
+                    <div className="job__title">{job.title}</div>
                 </div>
             </div>
-            <div class="job__desc">
-                <div class="job__info">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime sunt non vero, veniam voluptatem eligendi similique sapiente impedit voluptate architecto quidem? Eos doloremque consequuntur est cum temporibus veniam itaque ex.</div>
+            <div className="job__desc">
+                <div className="job__info">{job.description}</div>
             </div>
-            <div class="job__footer">
-                <div class="job__location">Job Location</div>
-                <div class="job__date">Posted</div>
-                <a href="#" target="_blank" class="job__link"><i class="fa-solid fa-globe"></i></a>
+            <div className="job__footer">
+                <div className="job__location">{job.location.display_name}</div>
+                <div className="job__date">{job.created.slice(0,10)}</div>
+                <a href={job.redirect_url} target="_blank" className="job__link"><FontAwesomeIcon icon={faGlobe}/></a>
             </div>
         </div>
     </div>

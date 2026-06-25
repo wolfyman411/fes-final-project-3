@@ -7,15 +7,15 @@ export default function Footer() {
 
   return (
     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="footer__title">Job Lurker</div>
-                <div class="footer__links">
-                    <a class="footer__link outline outline--primary clickable" onClick={() => navigate("/")}>Home</a>
-                    <a class="footer__link outline outline--primary clickable" onClick={() => navigate("/browse")}>Browse</a>
-                    <a class="footer__link outline outline--primary clickable">About</a>
+        <div className="container">
+            <div className="row">
+                <div className="footer__title">Job Lurker</div>
+                <div className="footer__links">
+                    <a className="footer__link outline outline--primary clickable" onClick={() => navigate("/")}>Home</a>
+                    <a className="footer__link outline outline--primary clickable" onClick={() => navigate("/browse")}>Browse</a>
+                    <a className="footer__link outline outline--primary clickable">About</a>
                 </div>
-                <div class="footer__copy">Copyright &copy; 2026 Job Lurker</div>
+                <div className="footer__copy">Copyright &copy; 2026 Job Lurker</div>
             </div>
         </div>
     </footer>
