@@ -1,0 +1,5 @@
+1. Get the project working in react
+2. Build a homepage
+3. Add a jobpage when clicking on a job
+4. Add skeletons
+5. Add about
