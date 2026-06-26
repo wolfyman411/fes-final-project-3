@@ -1,3 +1,1 @@
-3. Add a jobpage when clicking on a job
-4. Add skeletons
-5. Add about
+- Check for scaling on mobile devices and fix search issue

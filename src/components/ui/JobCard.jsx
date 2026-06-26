@@ -1,11 +1,15 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom'
 
-export default function JobCard({job,skeleton}) {
+export default function JobCard({job,skeleton,setSelectedJob}) {
+
+  let navigate = useNavigate()
+
   function defaultHTML() {
     return (
-        <div className="browse__job">
+        <div className="browse__job clickable" onClick={() => {setSelectedJob(job); navigate("/job")}}>
             <div className="browse__job--wrapper">
                 <div className="company__logo--wrapper">
                     <div className="job__logo">{job.company.display_name[0]}</div>

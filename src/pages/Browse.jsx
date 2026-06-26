@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight, faSearch } from '@fortawesome/free-solid-svg-icons'
 import JobCard from '../components/ui/JobCard'
 import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
-export default function Browse({}) {
+export default function Browse({setSelectedJob}) {
 
+  const {search} = useParams()
   const [newJobs,setNewJobs] = useState([])
   const [sortedJobs,setSortedJobs] = useState(newJobs)
-  const [searchTerm,setSearchTerm] = useState("")
+  const [searchTerm,setSearchTerm] = useState(search)
   const [sortType,setSortType] = useState("")
   const [jobType,setJobType] = useState("")
   const [jobAmount,setJobAmount] = useState(6)
@@ -18,6 +20,12 @@ export default function Browse({}) {
   useEffect(() => {
     getNewJobs()
   },[])
+
+  useEffect(() => {
+    const newSearchTerm = search || ''
+    setSearchTerm(newSearchTerm);
+    getNewJobs(newSearchTerm)
+  }, [search]);
 
   useEffect(() => {
     sortNewJobs()
@@ -62,9 +70,9 @@ export default function Browse({}) {
     setSortedJobs(result)
   }
 
-  async function getNewJobs() {
+  async function getNewJobs(term=searchTerm) {
     setSortedJobs([])
-    const {data} = await axios.get(`https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=50dce129&app_key=fa2501d32fdc779a3a027b2d50cf2d91&results_per_page=1000&what=${searchTerm}`)
+    const {data} = await axios.get(`https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=50dce129&app_key=fa2501d32fdc779a3a027b2d50cf2d91&results_per_page=1000&what=${term}`)
     setNewJobs(data.results)
     setSortedJobs(newJobs)
   }
@@ -84,47 +92,49 @@ export default function Browse({}) {
 
   return (
     <section id="browse">
-          <div class="container">
-              <div class="row">
-                  <div class="section__title">Browse Job Postings</div>
-                  <div class="section__sub">Use the <b class="primary">filters</b> and <b class="primary">searchbar</b> below to find your <b class="primary">ideal job.</b></div>
-                  <div class="browse__bar">
-                      <div class="search_bar">
-                          <input type="text" class="search_bar--input" placeholder="Search" onChange={(event) => setSearchTerm(event.target.value)}/>
+          <div className="container">
+              <div className="row">
+                  <div className="section__title">Browse Job Postings</div>
+                  <div className="section__sub">Use the <b className="primary">filters</b> and <b className="primary">searchbar</b> below to find your <b className="primary">ideal job.</b></div>
+                  <div className="browse__bar">
+                      <div className="search_bar">
+                          <input type="text" className="search_bar--input" placeholder="Search" onChange={(event) => setSearchTerm(event.target.value)} onKeyPress={(event) => event.key === 'Enter' && getNewJobs()}/>
                           <FontAwesomeIcon icon={faSearch} onClick={() => getNewJobs()} className='clickable'/>
                       </div>
-                      <select className="browse__select" onChange={(event) => {setSortType(event.target.value)}}>
-                          <option disabled selected>Sort By</option>
+                      <div className="browse__selects">
+                        <select className="browse__select" onChange={(event) => {setSortType(event.target.value)}} defaultValue="DEFAULT">
+                          <option disabled value="DEFAULT">Sort By</option>
                           <option value="A_TO_Z">A to Z</option>
                           <option value="Z_TO_A">Z to A</option>
                           <option value="NEWEST">Newest</option>
                           <option value="OLDEST">Oldest</option>
-                      </select>
-                      <select class="browse__select" onChange={(event) => setJobType(event.target.value)}>
-                          <option disabled selected>Type</option>
-                          <option value="FULL_TIME">Full Time</option>
-                          <option value="PART_TIME">Part Time</option>
-                          <option value="ANY">Any</option>
-                      </select>
-                      <select class="browse__select" onChange={(event) => setJobAmount(parseInt(event.target.value))}>
-                          <option disabled selected>Items Per Search</option>
-                          <option value="6">6</option>
-                          <option value="12">12</option>
-                          <option value="24">24</option>
-                      </select>
+                        </select>
+                        <select className="browse__select" onChange={(event) => setJobType(event.target.value)} defaultValue="DEFAULT">
+                            <option disabled value="DEFAULT">Type</option>
+                            <option value="FULL_TIME">Full Time</option>
+                            <option value="PART_TIME">Part Time</option>
+                            <option value="ANY">Any</option>
+                        </select>
+                        <select className="browse__select" onChange={(event) => setJobAmount(parseInt(event.target.value))} defaultValue="DEFAULT">
+                            <option disabled value="DEFAULT">Items Per Search</option>
+                            <option value="6">6</option>
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                        </select>
+                      </div>
                   </div>
-                  <div class="browse__jobs--wrapper">
-                      <div class="browse__jobs">
+                  <div className="browse__jobs--wrapper">
+                      <div className="browse__jobs">
                         {sortedJobs.length > 0 ? 
-                            sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).map((job, i) => <JobCard key={job.id} job={job} skeleton={false}/>) 
+                            sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).map((job, i) => <JobCard key={job.id} job={job} skeleton={false} setSelectedJob={setSelectedJob}/>) 
                             : 
                             new Array(jobAmount).fill(0).map((_, i) => <JobCard skeleton={true} key={i}/>)
                         }
                       </div>
-                      <div class="browse__footer">
-                          <div class="browse__footer--arrow" onClick={() => changePage(-1)}><FontAwesomeIcon icon={faArrowLeft}/></div>
-                          <div class="browse__footer--number">{pageNumber}</div>
-                          <div class="browse__footer--arrow" onClick={() => changePage(1)}><FontAwesomeIcon icon={faArrowRight}/></div>
+                      <div className="browse__footer">
+                          <div className="browse__footer--arrow" onClick={() => changePage(-1)}><FontAwesomeIcon icon={faArrowLeft}/></div>
+                          <div className="browse__footer--number">{pageNumber}</div>
+                          <div className="browse__footer--arrow" onClick={() => changePage(1)}><FontAwesomeIcon icon={faArrowRight}/></div>
                       </div>
                   </div>
               </div>

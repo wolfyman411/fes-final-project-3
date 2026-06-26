@@ -5,10 +5,12 @@ import Footer from './components/Footer';
 import Browse from './pages/Browse';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
+import Job from './pages/Job';
 
 function App() {
 
   const [jobs,setJobs] = useState([]) 
+  const [selectedJob,setSelectedJob] = useState([]) // The API I am using doesn't allow getting jobs with an id, so a brute force method is required.
 
   useEffect(() => {
     getJobs()
@@ -25,8 +27,10 @@ function App() {
         <div className="App">
           <Nav/>
           <Routes>
-            <Route path="/" element={<Homepage jobs={jobs}/>}></Route>
-            <Route path="/browse" element={<Browse/>}></Route>
+            <Route path="/" exact element={<Homepage jobs={jobs}/>}></Route>
+            <Route path="/browse/:search" exact element={<Browse setSelectedJob={setSelectedJob}/>}></Route>
+            <Route path="/browse" exact element={<Browse setSelectedJob={setSelectedJob}/>}></Route>
+            <Route path="/job" exact element={<Job job={selectedJob}/>}></Route>
           </Routes>
           <Footer/>
         </div>
