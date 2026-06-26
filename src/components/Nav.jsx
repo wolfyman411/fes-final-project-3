@@ -14,12 +14,12 @@ export default function Nav() {
             <div className="nav__title clickable" onClick={() => navigate("/")}>Job Lurker</div>
             <div className="search_bar">
                 <input type="text" className="search_bar--input" placeholder="Search" onChange={(event) => setSearchTerm(event.target.value)} onKeyPress={(event) => event.key === 'Enter' && navigate(`/browse/${searchTerm}`)}/>
-                <FontAwesomeIcon icon={faSearch} className='fa-magnifying-glass'  onClick={() => navigate(`/browse/${searchTerm}`)} className='clickable'/>
+                <FontAwesomeIcon icon={faSearch} className='fa-magnifying-glass clickable'  onClick={() => navigate(`/browse/${searchTerm}`)}/>
             </div>
             <div className="nav__links">
                 <a className="nav__link outline outline--primary clickable" onClick={() => navigate("/")}>Home</a>
                 <a className="nav__link outline outline--primary clickable" onClick={() => navigate(`/browse`)}>Browse</a>
-                <a className="nav__link outline outline--primary not-clickable">About</a>
+                <a className="nav__link outline outline--primary not-clickable" href='#'>About</a>
             </div>
         </div>
     </nav>

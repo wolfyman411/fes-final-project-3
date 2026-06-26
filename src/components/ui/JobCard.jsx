@@ -24,7 +24,7 @@ export default function JobCard({job,skeleton,setSelectedJob}) {
                 <div className="job__footer">
                     <div className="job__location">{job.location.display_name}</div>
                     <div className="job__date">{job.created.slice(0,10)}</div>
-                    <a href={job.redirect_url} target="_blank" className="job__link"><FontAwesomeIcon icon={faGlobe}/></a>
+                    <a href={job.redirect_url} target="_blank" className="job__link" rel="noreferrer"><FontAwesomeIcon icon={faGlobe}/></a>
                 </div>
             </div>
         </div>

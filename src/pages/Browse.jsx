@@ -15,7 +15,6 @@ export default function Browse({setSelectedJob}) {
   const [jobType,setJobType] = useState("")
   const [jobAmount,setJobAmount] = useState(6)
   const [pageNumber,setPageNumber] = useState(0)
-  const [browseEntries,setBrowseEntries] = useState([])
 
   useEffect(() => {
     getNewJobs()
@@ -83,7 +82,7 @@ export default function Browse({setSelectedJob}) {
       return;
     }
     // Stop going forward if at end
-    if (sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).length % jobAmount != 0 && val > 0) {
+    if (sortedJobs.slice(pageNumber*jobAmount, (pageNumber*jobAmount)+jobAmount).length % jobAmount !== 0 && val > 0) {
       return;
     }
 

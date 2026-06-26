@@ -13,7 +13,7 @@ export default function Footer() {
                 <div className="footer__links">
                     <a className="footer__link outline outline--primary clickable" onClick={() => navigate("/")}>Home</a>
                     <a className="footer__link outline outline--primary clickable" onClick={() => navigate("/browse")}>Browse</a>
-                    <a className="footer__link outline outline--primary not-clickable">About</a>
+                    <a className="footer__link outline outline--primary not-clickable" href='#'>About</a>
                 </div>
                 <div className="footer__copy">Copyright &copy; 2026 Job Lurker</div>
             </div>

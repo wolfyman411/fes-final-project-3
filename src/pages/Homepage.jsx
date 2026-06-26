@@ -45,7 +45,7 @@ export default function Homepage({jobs}) {
                                 new Array(8).fill(0).map((_, i) => <RecentCard skeleton={true} key={i}/>)
                             }
                         </div>
-                        <div className="recent__jobs" aria-hidden="">
+                        <div className="recent__jobs" aria-hidden={true}>
                             {getRecentJobs().length > 0 ? 
                                 getRecentJobs().map((job) => <RecentCard job={job} key={job.id}/>)
                                 : 

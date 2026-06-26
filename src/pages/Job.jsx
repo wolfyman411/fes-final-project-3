@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function Job({job}) {
@@ -34,6 +34,8 @@ export default function Job({job}) {
   }
 
   return (
+    <>
+    {job.title ? ( 
     <section id="jobpage">
         <div className="container">
             <div className="jobpage--wrapper">
@@ -71,6 +73,9 @@ export default function Job({job}) {
                 </div>
             </div>
         </div>
-    </section>
+    </section>) :
+    (navigate("/browse"))
+    }
+    </>
   )
 }
