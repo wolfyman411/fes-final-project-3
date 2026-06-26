@@ -17,8 +17,8 @@ export default function Nav() {
                 <FontAwesomeIcon icon={faSearch} className='fa-magnifying-glass clickable'  onClick={() => navigate(`/browse/${searchTerm}`)}/>
             </div>
             <div className="nav__links">
-                <a className="nav__link outline outline--primary clickable" onClick={() => navigate("/")}>Home</a>
-                <a className="nav__link outline outline--primary clickable" onClick={() => navigate(`/browse`)}>Browse</a>
+                <a className="nav__link outline outline--primary clickable" href='#' onClick={() => navigate("/")}>Home</a>
+                <a className="nav__link outline outline--primary clickable" href='#' onClick={() => navigate(`/browse`)}>Browse</a>
                 <a className="nav__link outline outline--primary not-clickable" href='#'>About</a>
             </div>
         </div>

@@ -5,10 +5,6 @@ export default function Job({job}) {
 
   let navigate = useNavigate()
 
-  useEffect(() => {
-    console.log(job)
-  },[])
-
   function returnSalary(lowSalary,highSalary) {
 
     if (lowSalary === highSalary) {
@@ -43,7 +39,7 @@ export default function Job({job}) {
                     <div className='jobpage__section section--right'>
                         <div className="jobpage__header--wrapper">
                             <div>
-                                <a className="jobpage__back outline outline--secondary clickable" onClick={() => navigate("/browse")}>
+                                <a className="jobpage__back outline outline--secondary clickable" href="#" onClick={() => navigate("/browse")}>
                                     ← Back
                                 </a>
                                 <div className="jobpage__title">
@@ -63,7 +59,7 @@ export default function Job({job}) {
                         <div className="jobpage__desc">
                             {job.description}
                         </div>
-                        <a className="jobpage__link outline outline--secondary clickable" href={job.redirect_url} target='_blank'>Website</a>
+                        <a className="jobpage__link outline outline--secondary clickable" href={job.redirect_url} target='_blank' rel='noreferrer'>Website</a>
                     </div>
                     <div className='jobpage__section section--left'>
                         <div className="jobpage__logo">
